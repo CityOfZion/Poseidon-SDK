@@ -58,13 +58,13 @@ This package is usable as of V 0.30.0 however this repo should be forked as ther
 	}
     s.Hex()
 
-* Please note, that the argument slice will not accept structs.*
+*Please note, that the argument slice will not accept structs.*
 
 ## Transactions
 
 ### Contract Transaction
 
-To send 1000 GAS to ANmQW9femWe1oPgEDD4pSTaNUu5rvHYW1R and 1000 GAS to ALxUuc4gSNaYdUUrPudem4DMkowz6x6Rwo
+*To send 1000 GAS to ANmQW9femWe1oPgEDD4pSTaNUu5rvHYW1R and 1000 GAS to ALxUuc4gSNaYdUUrPudem4DMkowz6x6Rwo*
 
     tx := CreateContractTransaction()
 
@@ -82,7 +82,7 @@ To send 1000 GAS to ANmQW9femWe1oPgEDD4pSTaNUu5rvHYW1R and 1000 GAS to ALxUuc4gS
 
     transactionInHex := hex.EncodeToString(buf.Bytes())
 
-Please note that the amount needs to be in Fixed8 format. Numbers are expected to be in their Fixed8 format as an int64. E.g. 5 GAS would be int64(5 * 1e8) . Users can use the Fixed8 class to automatically do the conversion, or have this done in their applications business logic.
+*Please note that the amount needs to be in Fixed8 format. Numbers are expected to be in their Fixed8 format as an int64. E.g. 5 GAS would be int64(5 * 1e8) . Users can use the Fixed8 class to automatically do the conversion, or have this done in their applications business logic.*
 
 ### Invocation Transaction
 
