@@ -1,53 +1,60 @@
 package api
 
-import (
-	"encoding/json"
-	"fmt"
-	network "multicrypt/network"
-)
+// REFER TO README
 
-type API struct{}
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// 	network "multicrypt/network"
+// )
 
-type Unspent struct {
-	Value float64 `json:"value"`
-	Txid  string  `json:"txid"`
-	Index uint32  `json:"n"`
-}
+// type API struct{}
 
-type JsonBalanceResponse struct {
-	Balance []struct {
-		UTXOs  []Unspent `json:"unspent"`
-		Asset  string    `json:"asset"`
-		Amount float64   `json:"amount"`
-	} `json:"balance"`
-	Address string `json:"address"`
-}
+// type Unspent struct {
+// 	Value float64 `json:"value"`
+// 	Txid  string  `json:"txid"`
+// 	Index uint32  `json:"n"`
+// }
 
-func (n *API) CheckBalance(address string) JsonBalanceResponse {
+// type JsonBalanceResponse struct {
+// 	Balance []struct {
+// 		UTXOs  []Unspent `json:"unspent"`
+// 		Asset  string    `json:"asset"`
+// 		Amount float64   `json:"amount"`
+// 	} `json:"balance"`
+// 	Address string `json:"address"`
+// }
 
-	url := fmt.Sprintf("https://api.neoscan.io/api/main_net/v1/get_balance/%s", address)
+// func (n *API) CheckBalance(address string) JsonBalanceResponse {
 
-	body, err := network.MakeRequest(url)
+// 	url := fmt.Sprintf("https://api.neoscan.io/api/main_net/v1/get_balance/%s", address)
 
-	if err != nil {
-		return JsonBalanceResponse{}
-	}
+// 	body, err := network.MakeRequest(url)
 
-	jsonBal := JsonBalanceResponse{}
+// 	if err != nil {
+// 		return JsonBalanceResponse{}
+// 	}
 
-	jsonErr := json.Unmarshal(body, &jsonBal)
+// 	jsonBal := JsonBalanceResponse{}
 
-	if jsonErr != nil {
-		return JsonBalanceResponse{}
-	}
+// 	jsonErr := json.Unmarshal(body, &jsonBal)
 
-	return jsonBal
-}
+// 	if jsonErr != nil {
+// 		return JsonBalanceResponse{}
+// 	}
+// 	// fmt.Println(jsonBal.Balance[3])
 
-func (n *API) SendTransaction(b []byte) {
+// 	for _, bal := range jsonBal.Balance {
 
-}
+// 		fmt.Println(bal.Asset, bal.Amount)
+// 	}
+// 	return jsonBal
+// }
 
-func (*API) ListAllTokens() []byte {
-	return []byte("")
-}
+// func (n *API) SendTransaction(b []byte) {
+
+// }
+
+// func (*API) ListAllTokens() []byte {
+// 	return []byte("")
+// }
