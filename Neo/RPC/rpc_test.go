@@ -7,21 +7,41 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TODO: Need to do these tests so they pass
-
 func TestRPCSendTrans(t *testing.T) {
-	node := rpc{"http://seed1.cityofzion.io:8080"}
+
+	// Invalid hex string should return false
+	node := Rpc{"http://seed1.cityofzion.io:8080"}
 	res := node.SendTransaction("Invalid String")
-	assert.Equal(t, true, res)
+	assert.Equal(t, false, res)
+
 }
 
 func TestRPCGetRawTrans(t *testing.T) {
-	node := rpc{"http://seed2.cityofzion.io:8080"}
-	result, err := node.GetRawTransaction("c059754d44dba4d0d4cce71d4c503443ef8c2124f83c1fb760373431184823bc", 0)
-	fmt.Println("RESF: ", result)
+	node := Rpc{"http://seed3.aphelion-neo.com:10332"}
+	result, err := node.GetRawTransaction("56d477f7cffe5f3f919be798e7c752c754faf03870d202432b8157d9da0dfc57", 0)
+
 	if err != nil {
 
 		t.Fail()
 	}
-	assert.Equal(t, "02000177f16f02a27d34564005427b6337ce5072732d25bd4b7c603ef60180778c23400000000001e72d286979ee6cb1b7e65dfddfb2e384100b8d148e7758de42e4168b71792c606403000000000000860a46b5e9bc93aa726b2e838043d3ee0c053a49014140b65a715a0d4e02fa02ed87bdd03d9dd783899eb2f83a7921008ea11f846db3d9a1b8915cf48ed91c9407da2c7399bb4ead0ac7c142eecab2d28b8d86f5dbfc89232102a8d1a605a4de00c3f1d0ae6707f41d45044d9cd08077362e29ebebbb1fcfc53eac", result)
+
+	assert.Equal(t, "d101530880bd7e5b01000000145ff7a5ad95cf4370f84514e01b1acd8fc28f3b4f14d92f268b9bd6133c9a6dc50c04e7ddd1f0aee10b53c1087472616e736665726735f731696271626c14d6cbddaf736f50ddc8992100000000000000000220d92f268b9bd6133c9a6dc50c04e7ddd1f0aee10bf0153135333138343932353635313466613363323365610000014140251c00a67aee3dd6df96bfac34b7851306506db68d80a34ea8b3c22b96fc6f94b96a0e40947bce582be02d7508b70655d626d8ca7e75fd1dca59589914ba4ed52321032e07a10aa1f1a56900e2ec1c6255aaf53f6ddc606729b8255ccbb7b90d5724b4ac", result)
+}
+func TestGetBlock(t *testing.T) {
+	node := Rpc{"https://seed1.neo.org:20331"}
+
+	res, _ := node.getRawBlock(2000, 0)
+
+	assert.NotEmpty(t, res)
+}
+
+func TestInvok(t *testing.T) {
+	node := Rpc{"https://seed1.neo.org:20331"}
+
+	res, err := node.InvokeScript("1457c4cf51f12ce6d78a585f1ea9bd1f3927c7232c51c10962616c616e63654f6667e7b132b995f43dbbddd2a3268a04a2ae081eff9a")
+	if err != nil {
+		fmt.Println(err, res)
+	}
+	assert.NotEmpty(t, res)
+
 }

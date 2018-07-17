@@ -1,42 +1,103 @@
 package rpc
 
 import (
+	"fmt"
+
 	"github.com/ybbus/jsonrpc"
 )
 
-// This package does two things and only two things:
-// - connect to the best main, test or private node
-// - Use RPC commands t send and recieve data.
-// No composition of transactions, no sorting data.
-// If it is an argument for the rpc command, it is ready to be sent off
-// right now, we only want the RPC to use two commands:
-// - Send Transaction and GetRawTransaction
-// This package will be called by other packages such as transaction
-
-type rpc struct {
-	url string
+type Rpc struct {
+	Url string
 }
 
-func (u *rpc) SendTransaction(raw string) bool {
-	rpcClient := jsonrpc.NewClient(u.url)
+func (u *Rpc) SendTransaction(raw string) bool {
+	rpcClient := jsonrpc.NewClient(u.Url)
 	response, err := rpcClient.Call("sendrawtransaction", raw)
 	if err != nil {
 		return false
 	}
 
 	result, _ := response.GetBool()
-
 	return result
 }
 
-func (u *rpc) GetRawTransaction(txid string, verbose int8) (string, error) {
-	rpcClient := jsonrpc.NewClient(u.url)
+func (u *Rpc) GetRawTransaction(txid string, verbose int8) (string, error) {
+	rpcClient := jsonrpc.NewClient(u.Url)
 	response, err := rpcClient.Call("getrawtransaction", txid, verbose)
 	if err != nil {
 		return "", err
 	}
 
 	return response.GetString()
+}
+
+func (u *Rpc) InvokeScript(script string) (TokenBalanceResult, error) {
+	rpcClient := jsonrpc.NewClient(u.Url)
+	response, err := rpcClient.Call("invokescript", script)
+	if err != nil {
+		return TokenBalanceResult{}, err
+	}
+	var res *TokenBalanceResult
+	err = response.GetObject(&res)
+	if err != nil || res == nil {
+		return TokenBalanceResult{}, err
+	}
+	return *res, nil
+}
+
+func (u *Rpc) GetRawMempool() []string {
+	rpcClient := jsonrpc.NewClient(u.Url)
+
+	response, err := rpcClient.Call("getrawmempool", "")
+	res := []string{}
+	if err != nil || response == nil {
+		return res
+	}
+
+	transactions := response.Result.([]interface{})
+
+	for _, transaction := range transactions {
+		if transactionAsString, ok := transaction.(string); ok {
+			res = append(res, transactionAsString)
+		}
+
+	}
+
+	return res
+}
+
+func (u *Rpc) GetBlock(index int) (BlockRes, error) {
+	rpcClient := jsonrpc.NewClient(u.Url)
+	response, err := rpcClient.Call("getblock", index, 1)
+	fmt.Println(response)
+	if err != nil {
+
+		return BlockRes{}, err
+	}
+
+	var res *BlockRes
+
+	err = response.GetObject(&res) // expects a rpc-object result value like: {"id": 123, "name": "alex", "age": 33}
+	if err != nil || res == nil {
+		// some error on json unmarshal level or json result field was null
+
+		return BlockRes{}, err
+	}
+	return *res, nil
+
+}
+func (u *Rpc) getRawBlock(index int, verbose int) (string, error) {
+	rpcClient := jsonrpc.NewClient(u.Url)
+	response, err := rpcClient.Call("getblock", index, verbose)
+	fmt.Println(response)
+	if err != nil {
+
+		return "", err
+	}
+
+	res, err := response.GetString() // expects a rpc-object result value like: {"id": 123, "name": "alex", "age": 33}
+	return res, err
+
 }
 
 // TODO: I would like to start off with a list of hardcoded nodes,
