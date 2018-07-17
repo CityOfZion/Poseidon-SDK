@@ -1,8 +1,6 @@
 package neo
 
 import (
-	"encoding/hex"
-	"fmt"
 	crypto "multicrypt/crypto"
 
 	bip32 "multicrypt/crypto/bip32"
@@ -13,8 +11,7 @@ import (
 	"github.com/o3labs/neo-utils/neoutils/btckey"
 )
 
-type Coin struct {
-}
+type Coin struct{}
 
 func init() {
 	btckey.ChosenCurve.SetCurveSecp256r1()
@@ -24,12 +21,10 @@ func (c *Coin) GeneratePrivateKey(mnemonic string, external, index int) *bip32.K
 
 	seed := bip39.NewSeed(mnemonic, "")
 
-	fmt.Println("SEED: ", hex.EncodeToString(seed))
-
 	masterKey, err := bip32.NewMasterKey(seed)
 
 	if err != nil {
-
+		return nil
 	}
 	coin := bip44.TypeAntshares
 	account := uint32(0x80000000) // Hardened First child
@@ -43,13 +38,16 @@ func (c *Coin) GeneratePrivateKey(mnemonic string, external, index int) *bip32.K
 
 func (c *Coin) PubKeyToAddress(pubKey *bip32.Key) string {
 
-	pub_bytes := pubKey.PublicKey().Key
+	publicKeyBytes := pubKey.PublicKey().Key
 
 	//No current documentation on what this does, however it is needed for NEO
-	pub_bytes = append([]byte{0x21}, pub_bytes...)
-	pub_bytes = append(pub_bytes, 0xAC)
+	// This is for the scriptHash, the verification script
+	// This could be added at the time of creating the verif script, so no reason for this to be here
+	// The 0xAC is CHECKSIG
+	publicKeyBytes = append([]byte{0x21}, publicKeyBytes...)
+	publicKeyBytes = append(publicKeyBytes, 0xAC)
 
-	hash160PubKey, _ := crypto.Hash160(pub_bytes)
+	hash160PubKey, _ := crypto.Hash160(publicKeyBytes)
 
 	versionHash160PubKey := append([]byte{0x17}, hash160PubKey...)
 
@@ -63,18 +61,8 @@ func (c *Coin) PubKeyToAddress(pubKey *bip32.Key) string {
 
 }
 
-func ToNeoAddress(k bip32.Key) {
-
-	// pubKey := k.PublicKey().Key
-
-}
-
-func ToNeoSignature(pubKey []byte) (signature []byte) {
-
-	pubBytes := append([]byte{0x21}, pubKey...)
-	pubBytes = append(pubBytes, 0xAC)
-
-	pubHash, _ := crypto.Hash160(pubBytes)
-
-	return pubHash
+func (c *Coin) GenerateMnemonic() string {
+	randomNum, _ := bip39.NewEntropy(128)
+	mnemonic, _ := bip39.NewMnemonic(randomNum)
+	return mnemonic
 }

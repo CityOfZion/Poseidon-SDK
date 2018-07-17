@@ -2,7 +2,6 @@ package neo
 
 import (
 	"encoding/hex"
-	network "multicrypt/Neo/API"
 	"multicrypt/crypto"
 	"testing"
 
@@ -12,13 +11,12 @@ import (
 func TestWIFEncoder(t *testing.T) {
 	// Test taken from : https://coranos.github.io/neo/ledger-nano-s/recovery/
 	neoCoin := Coin{}
-	mnemonic := "scare daughter hazard climb layer card useful find giraffe play street bonus depend execute appear never book file shock nest strike impulse clarify vintage"
-	privKey := neoCoin.GeneratePrivateKey(mnemonic, 0, 0)
-
-	assert.Equal(t, "KxcqV28rGDcpVR3fYg7R9vricLpyZ8oZhopyFLAWuRv7Y8TE9WhW", crypto.WIFEncode(privKey.Key))
+	mnemonic := "online ramp onion faculty trap clerk near rabbit busy gravity prize employ"
+	privKey := neoCoin.GeneratePrivateKey(mnemonic, 0, 1)
+	assert.Equal(t, "KyBJR4835UvmiTBaUwvAN7WVdtpMMCkN3Wqnn7F8UFvd6UaVXFuQ", crypto.WIFEncode(privKey.Key))
 }
 
-func TestPrvateKeys(t *testing.T) {
+func TestPrivateKeyGeneration(t *testing.T) {
 	neoCoin := Coin{}
 	mnemonic := "online ramp onion faculty trap clerk near rabbit busy gravity prize employ"
 	privKey := neoCoin.GeneratePrivateKey(mnemonic, 0, 0) // returns a bip32.Key
@@ -29,19 +27,17 @@ func TestPrvateKeys(t *testing.T) {
 func TestPrivateKeyToAddress(t *testing.T) {
 	neoCoin := Coin{}
 	mnemonic := "online ramp onion faculty trap clerk near rabbit busy gravity prize employ"
-	prKey := neoCoin.GeneratePrivateKey(mnemonic, 0, 0)
+
+	prKey := neoCoin.GeneratePrivateKey(mnemonic, 0, 1)
 	address := neoCoin.PubKeyToAddress(prKey.PublicKey())
-	assert.Equal(t, "AHDKs3tXxhws9twq2Bk7VL1GGqfmSjEVhV", address)
+	assert.Equal(t, "ALxUuc4gSNaYdUUrPudem4DMkowz6x6Rwo", address)
 }
+func TestPubToAddress(t *testing.T) {
 
-func TestGetBalanceOfUsedAddress(t *testing.T) {
-	nw := network.API{}
-	response := nw.CheckBalance("AXym3Qc9mRbKF5HWAtmJUoHvB3F8brEdLe")
-	assert.NotEqual(t, "not found", response.Address) // Test will fail, if the address has not been used yet
-}
-
-func TestGetBalanceOfNewAddress(t *testing.T) {
-	nw := network.API{}
-	response := nw.CheckBalance("AT9DbViHVMy52FZnw2XDjT3TMkMNYyZZmm")
-	assert.Equal(t, "not found", response.Address) // Test will fail, if the address has not been used yet
+	neoCoin := Coin{}
+	mnemonic := "online ramp onion faculty trap clerk near rabbit busy gravity prize employ"
+	privKey := neoCoin.GeneratePrivateKey(mnemonic, 0, 1) // returns a bip32.Key
+	pubKey := privKey.PublicKey()
+	address := neoCoin.PubKeyToAddress(pubKey)
+	assert.Equal(t, "ALxUuc4gSNaYdUUrPudem4DMkowz6x6Rwo", address)
 }
