@@ -1,5 +1,7 @@
 # ReadMe
 
+Version : 0.39.0
+
 This repo provides all of the necessary functions to run a BIP32, BIP44 and BIP39 compliant wallet on NEO.
 
 The framework also allows for more than one cryptocurrency, with different elliptic curves. Please see the BTC package on how to use this package with another cryptocurency.
@@ -7,7 +9,6 @@ The framework also allows for more than one cryptocurrency, with different ellip
 # Usability
 
 This package is usable as of V 0.30.0 however this repo should be forked as there will be breaking changes until V 1.0
-
 
 # SDK API
 
