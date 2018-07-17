@@ -1,8 +1,7 @@
-package btc
+package BTC
 
 import (
 	"encoding/hex"
-	"fmt"
 	crypto "multicrypt/crypto"
 
 	bip32 "github.com/FactomProject/go-bip32"
@@ -43,9 +42,6 @@ func (c *Coin) PrivateKeyToAddress(privKey string) string {
 	}
 	pub_bytes := priv.PublicKey.ToBytes()
 
-	fmt.Println("PUBLIC KEY: ", hex.EncodeToString(pub_bytes))
-
-	// fmt.Println(hex.EncodeToString(priv.PublicKey.ToBytes()))
 	hash160PubKey, _ := crypto.Hash160(pub_bytes)
 
 	versionHash160PubKey := append([]byte{0x00}, hash160PubKey...)
@@ -57,5 +53,4 @@ func (c *Coin) PrivateKeyToAddress(privKey string) string {
 	address := crypto.Base58Encode(checkVersionHash160)
 
 	return address
-	// return ""
 }

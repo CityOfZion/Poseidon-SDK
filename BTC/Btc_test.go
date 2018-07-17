@@ -1,4 +1,4 @@
-package btc
+package BTC
 
 import (
 	"testing"
@@ -16,5 +16,5 @@ func TestPrivateKeyGen(t *testing.T) {
 	mnemonic := "scare daughter hazard climb layer card useful find giraffe play street bonus depend execute appear never book file shock nest strike impulse clarify vintage"
 	address := btcCoin.PrivateKeyToAddress(btcCoin.GeneratePrivateKey(mnemonic, 0, 107))
 
-	assert.Equal(t, "195pRLBnd51BzuiMqVQ4W4SUoQH6fsbrEe", address)
+	assert.Equal(t, "95pRLBnd51BzuiMqVQ4W4SUoQH6fsbrEe", address)
 }
