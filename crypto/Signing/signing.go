@@ -2,31 +2,11 @@ package signing
 
 import (
 	"crypto/sha256"
-	"math/big"
 	crypto "multicrypt/crypto"
 	"multicrypt/crypto/Signing/rfc6979"
 	"multicrypt/crypto/bip32"
 	elliptic "multicrypt/crypto/elliptic"
 )
-
-type PublicKey struct {
-	elliptic.Point
-}
-
-type PrivateKey struct {
-	PublicKey
-	D *big.Int
-}
-
-// func PrivateKeyFromHexString(key string) ecdsa.PrivateKey {
-// 	b, _ := hex.DecodeString(key)
-
-// 	priv := new(ecdsa.PrivateKey)
-// 	priv.PublicKey.Curve = elliptic.P256()
-// 	priv.D = new(big.Int).SetBytes(b)
-// 	priv.PublicKey.X, priv.PublicKey.Y = priv.PublicKey.Curve.ScalarBaseMult(b)
-// 	return *priv
-// }
 
 func Sign(curve elliptic.EllipticCurve, data []byte, key bip32.Key) ([]byte, error) {
 
@@ -50,5 +30,5 @@ func Sign(curve elliptic.EllipticCurve, data []byte, key bip32.Key) ([]byte, err
 
 func Verify(curve elliptic.EllipticCurve, pubKey bip32.Key, signature []byte, hash []byte) bool {
 	// TODO: IMPLEMENT THIS FEATURE
-	return true
+	return false
 }
