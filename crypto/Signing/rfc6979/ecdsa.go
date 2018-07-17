@@ -3,8 +3,8 @@ package rfc6979
 import (
 	"hash"
 	"math/big"
-	"multicrypt/crypto/bip32"
-	elliptic "multicrypt/crypto/elliptic"
+	bip32 "multicrypt/crypto/bip32"
+	"multicrypt/crypto/elliptic"
 )
 
 // SignECDSA signs an arbitrary length hash (which should be the result of
@@ -14,11 +14,11 @@ import (
 // Note that FIPS 186-3 section 4.6 specifies that the hash should be truncated
 // to the byte-length of the subgroup. This function does not perform that
 // truncation itself.
-func SignECDSA(curve elliptic.EllipticCurve, priv bip32.Key, hash []byte, alg func() hash.Hash) (r, s *big.Int, err error) {
+func SignECDSA(curve elliptic.EllipticCurve, privateKey bip32.Key, hash []byte, alg func() hash.Hash) (r, s *big.Int, err error) {
 	c := curve
 	N := c.N
 	D := new(big.Int)
-	D.SetBytes(priv.Key)
+	D.SetBytes(privateKey.Key)
 	generateSecret(N, D, alg, hash, func(k *big.Int) bool {
 
 		inv := new(big.Int).ModInverse(k, N)
