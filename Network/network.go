@@ -23,7 +23,6 @@ func MakeRequest(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	// fmt.Println(resp)
 	body, readErr := ioutil.ReadAll(resp.Body)
 	if readErr != nil {
 		log.Fatal(readErr)
