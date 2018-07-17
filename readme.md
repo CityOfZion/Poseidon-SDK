@@ -1,4 +1,4 @@
-#Package - Main
+# ReadMe
 
 This repo provides all of the necessary functions to run a BIP32, BIP44 and BIP39 compliant wallet on NEO.
 
@@ -58,7 +58,7 @@ This package is usable as of V 0.30.0 however this repo should be forked as ther
 	}
     s.Hex()
 
-* Please note, that the argument slice will not accept structs.
+* Please note, that the argument slice will not accept structs.*
 
 ## Transactions
 
@@ -92,7 +92,7 @@ Please note that the amount needs to be in Fixed8 format. Numbers are expected t
 	tx.Script.SetScriptHash("9aff1e08aea2048a26a3d2ddbb3df495b932b1e7")
 
 	tx.TransferTokens("ALxUuc4gSNaYdUUrPudem4DMkowz6x6Rwo", "AQGV3Q4Q4kczcb7Q6Ax11zBP5WcygRRKXw", 100)
-	tx.AddAttributes(uint16(0xff), []byte(time.Now().String())) //
+	tx.AddAttributes(uint16(0xff), []byte(time.Now().String()))
 	tx.AddPrivateKey("online ramp onion faculty trap clerk near rabbit busy gravity prize employ", 0, 1)
 	tx.SignTransaction("online ramp onion faculty trap clerk near rabbit busy gravity prize employ")
 	buf := new(bytes.Buffer)
@@ -117,7 +117,7 @@ Please note that the amount needs to be in Fixed8 format. Numbers are expected t
 
 	node := Rpc{"http://seed1.cityofzion.io:8080"}
 	res := node.SendTransaction(transactionInHex)
-    // Transaction successful if res == true
+    *// Transaction successful if res == true*
 
 ### Get Transaction
 
@@ -125,7 +125,7 @@ Please note that the amount needs to be in Fixed8 format. Numbers are expected t
 
     node := Rpc{"http://seed3.aphelion-neo.com:10332"}
 	result, err := node.GetRawTransaction(txid, 0)
-    // 0 for transaction in hex, 1 for JSON
+    *// 0 for transaction in hex, 1 for JSON*
 
 ### Get Block
 
@@ -141,6 +141,6 @@ Please note that the amount needs to be in Fixed8 format. Numbers are expected t
 
 	res, err := node.InvokeScript()
 
-Script generated from script builder package
+*Script generated from script builder package*
 
 
