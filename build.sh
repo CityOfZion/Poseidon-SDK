@@ -1,0 +1,1 @@
+gomobile bind -v -target=ios -o /Users/blockchaindev/Documents/Projects/xcode/psdn/psdn/hello.framework . multicrypt/Neo/Transactions/ContractTransaction multicrypt/Neo/RPC multicrypt/Utils/Fixed8
